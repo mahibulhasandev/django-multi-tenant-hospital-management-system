@@ -1,0 +1,27 @@
+{
+  "name": "django-hospital-management-system",
+  "version": "1.0.0",
+  "description": "A web-based Hospital Management System built with Django to organize hospital operations and healthcare services.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mahibulhasandev/django-hospital-management-system.git"
+  },
+  "keywords": [],
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/mahibulhasandev/django-hospital-management-system/issues"
+  },
+  "homepage": "https://github.com/mahibulhasandev/django-hospital-management-system#readme",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.3",
+    "tailwindcss": "^4.3.3"
+  }
+}

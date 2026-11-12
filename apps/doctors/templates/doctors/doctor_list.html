@@ -1,0 +1,127 @@
+{% extends "base/dashboard_base.html" %}
+
+{% block title %}Doctors{% endblock %}
+
+{% block content %}
+
+<div class="space-y-6">
+
+    <!-- Header -->
+    <div class="flex flex-wrap items-center justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-bold text-gray-800">
+                Doctor Management
+            </h1>
+            <p class="text-sm text-gray-500">
+                Manage hospital doctors and their information.
+            </p>
+        </div>
+
+        <a href="{% url 'doctors:doctor_create' %}"
+           class="rounded-lg bg-teal-600 px-4 py-2 text-white hover:bg-teal-700">
+            + Add Doctor
+        </a>
+    </div>
+
+    <!-- Doctor Table -->
+    <div class="overflow-x-auto rounded-xl bg-white shadow-sm">
+
+        <table class="w-full text-left text-sm">
+
+            <thead class="bg-gray-50 text-gray-600">
+                <tr>
+                    <th class="px-6 py-4">Doctor</th>
+                    <th class="px-6 py-4">Department</th>
+                    <th class="px-6 py-4">Specialization</th>
+                    <th class="px-6 py-4">Experience</th>
+                    <th class="px-6 py-4">Consultation Fee</th>
+                    <th class="px-6 py-4">Availability</th>
+                    <th class="px-6 py-4">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody class="divide-y divide-gray-100">
+
+                {% for doctor in doctors %}
+
+                <tr class="hover:bg-gray-50">
+
+                    <td class="px-6 py-4">
+                        <p class="font-medium text-gray-800">
+                            Dr. {{ doctor.user.full_name }}
+                        </p>
+                        <p class="text-xs text-gray-500">
+                            {{ doctor.user.email|default:doctor.user.phone }}
+                        </p>
+                    </td>
+
+                    <td class="px-6 py-4">
+                        {{ doctor.department.name }}
+                    </td>
+
+                    <td class="px-6 py-4">
+                        {{ doctor.specialization }}
+                    </td>
+
+                    <td class="px-6 py-4">
+                        {{ doctor.experience_years }} Years
+                    </td>
+
+                    <td class="px-6 py-4">
+                        ৳{{ doctor.consultation_fee }}
+                    </td>
+
+                    <td class="px-6 py-4">
+                        {% if doctor.is_available %}
+                            <span class="rounded-full bg-green-100 px-3 py-1 text-green-700">
+                                Available
+                            </span>
+                        {% else %}
+                            <span class="rounded-full bg-red-100 px-3 py-1 text-red-700">
+                                Unavailable
+                            </span>
+                        {% endif %}
+                    </td>
+
+                    <td class="px-6 py-4">
+                        <div class="flex gap-3">
+
+                            <a href="{% url 'doctors:doctor_detail' doctor.pk %}"
+                               class="text-blue-600 hover:underline">
+                                View
+                            </a>
+
+                            <a href="{% url 'doctors:doctor_update' doctor.pk %}"
+                               class="text-teal-600 hover:underline">
+                                Edit
+                            </a>
+
+                            <a href="{% url 'doctors:doctor_delete' doctor.pk %}"
+                               class="text-red-600 hover:underline">
+                                Delete
+                            </a>
+
+                        </div>
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+                    <td colspan="7" class="px-6 py-10 text-center text-gray-500">
+                        No doctors found.
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

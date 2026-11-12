@@ -1,0 +1,118 @@
+{% extends "base/dashboard_base.html" %}
+
+{% block title %}Department Details{% endblock %}
+
+{% block content %}
+
+<div class="mx-auto max-w-4xl space-y-6">
+
+    {% if confirm_delete %}
+
+        <div class="rounded-xl bg-white p-8 shadow-sm">
+            <h1 class="text-2xl font-bold text-red-600">
+                Delete Department?
+            </h1>
+
+            <p class="mt-4 text-gray-600">
+                Are you sure you want to delete
+                <strong>{{ department.name }}</strong>?
+            </p>
+
+            <p class="mt-2 text-sm text-gray-500">
+                This action cannot be undone.
+            </p>
+
+            <form method="POST" class="mt-6 flex gap-3">
+                {% csrf_token %}
+
+                <button type="submit"
+                        class="rounded-lg bg-red-600 px-5 py-2 text-white hover:bg-red-700">
+                    Yes, Delete
+                </button>
+
+                <a href="{% url 'departments:department_detail' department.pk %}"
+                   class="rounded-lg border px-5 py-2 text-gray-600">
+                    Cancel
+                </a>
+            </form>
+        </div>
+
+    {% else %}
+
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">
+                    Department Details
+                </h1>
+                <p class="text-sm text-gray-500">
+                    View department information
+                </p>
+            </div>
+
+            <a href="{% url 'departments:department_update' department.pk %}"
+               class="rounded-lg bg-teal-600 px-4 py-2 text-white">
+                Edit Department
+            </a>
+        </div>
+
+        <div class="space-y-5 rounded-xl bg-white p-6 shadow-sm">
+
+            {% if department.image %}
+                <img src="{{ department.image.url }}"
+                     alt="{{ department.name }}"
+                     class="h-56 w-full rounded-lg object-cover">
+            {% endif %}
+
+            <div>
+                <p class="text-sm text-gray-500">Department Name</p>
+                <h2 class="text-xl font-semibold">
+                    {{ department.name }}
+                </h2>
+            </div>
+
+            <div>
+                <p class="text-sm text-gray-500">Description</p>
+                <p class="text-gray-700">
+                    {{ department.description }}
+                </p>
+            </div>
+
+            <div>
+                <p class="text-sm text-gray-500">Head of Department</p>
+                <p class="font-medium">
+                    {% if department.head_of_department %}
+                        {{ department.head_of_department.user.full_name }}
+                    {% else %}
+                        Not Assigned
+                    {% endif %}
+                </p>
+            </div>
+
+            <div>
+                <p class="text-sm text-gray-500">Status</p>
+                {% if department.is_active %}
+                    <span class="text-green-600">Active</span>
+                {% else %}
+                    <span class="text-red-600">Inactive</span>
+                {% endif %}
+            </div>
+
+            <div>
+                <p class="text-sm text-gray-500">Created At</p>
+                <p>{{ department.created_at|date:"d M Y, h:i A" }}</p>
+            </div>
+
+            <div class="border-t pt-5">
+                <a href="{% url 'departments:department_list' %}"
+                   class="text-teal-600 hover:underline">
+                    ← Back to Departments
+                </a>
+            </div>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

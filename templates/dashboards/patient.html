@@ -1,0 +1,438 @@
+
+{% extends 'base/dashboard_base.html' %}
+
+{% block title %}Patient Dashboard | HMS{% endblock %}
+
+{% block page_heading %}Patient Dashboard{% endblock %}
+
+{% block sidebar %}
+    {% include "patients/sidebar.html" %}
+{% endblock sidebar %}
+
+
+{% block content %}
+
+<div class="max-w-7xl mx-auto space-y-8">
+
+    <!-- Welcome Section -->
+    <section class="bg-gradient-to-r from-teal-700 to-teal-500 rounded-2xl p-6 sm:p-8 text-black shadow-sm">
+
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+
+            <div>
+                <p class="text-black text-sm font-medium">
+                    Patient Portal
+                </p>
+
+                <h1 class="text-2xl sm:text-3xl font-bold mt-2">
+                    Welcome back, {{ request.user.full_name }}!
+                </h1>
+
+                <p class="text-teal-50 mt-2">
+                    Manage your health, appointments and medical information.
+                </p>
+
+                <a href="#"
+                   class="inline-flex items-center gap-2 mt-6 bg-black text-teal-700 px-5 py-3 rounded-xl font-semibold hover:bg-teal-50 transition">
+                    + Book Appointment
+                </a>
+            </div>
+
+            <div class="hidden sm:flex w-24 h-24 rounded-2xl bg-white/20 items-center justify-center text-5xl">
+                ⚕
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Summary Cards -->
+    <section>
+
+        <div class="mb-5">
+            <h2 class="text-xl font-bold text-slate-800">
+                Health Overview
+            </h2>
+
+            <p class="text-sm text-slate-500 mt-1">
+                A quick overview of your hospital activities.
+            </p>
+        </div>
+
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+
+            <!-- Total Appointments -->
+            <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+
+                <div class="flex items-center justify-between">
+                    <div class="w-12 h-12 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center text-2xl">
+                        ▣
+                    </div>
+
+                    <span class="text-xs text-slate-400">All time</span>
+                </div>
+
+                <h3 class="text-3xl font-bold text-slate-800 mt-5">
+                    12
+                </h3>
+
+                <p class="text-sm text-slate-500 mt-1">
+                    Total Appointments
+                </p>
+
+            </div>
+
+
+            <!-- Upcoming -->
+            <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+
+                <div class="flex items-center justify-between">
+                    <div class="w-12 h-12 rounded-xl bg-teal-100 text-teal-600 flex items-center justify-center text-2xl">
+                        ◷
+                    </div>
+
+                    <span class="text-xs text-teal-600 font-medium">
+                        Upcoming
+                    </span>
+                </div>
+
+                <h3 class="text-3xl font-bold text-slate-800 mt-5">
+                    02
+                </h3>
+
+                <p class="text-sm text-slate-500 mt-1">
+                    Upcoming Appointments
+                </p>
+
+            </div>
+
+
+            <!-- Completed -->
+            <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+
+                <div class="flex items-center justify-between">
+                    <div class="w-12 h-12 rounded-xl bg-green-100 text-green-600 flex items-center justify-center text-2xl">
+                        ✓
+                    </div>
+
+                    <span class="text-xs text-green-600 font-medium">
+                        Completed
+                    </span>
+                </div>
+
+                <h3 class="text-3xl font-bold text-slate-800 mt-5">
+                    10
+                </h3>
+
+                <p class="text-sm text-slate-500 mt-1">
+                    Completed Appointments
+                </p>
+
+            </div>
+
+
+            <!-- Pending Payments -->
+            <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+
+                <div class="flex items-center justify-between">
+                    <div class="w-12 h-12 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center text-2xl">
+                        ৳
+                    </div>
+
+                    <span class="text-xs text-orange-600 font-medium">
+                        Pending
+                    </span>
+                </div>
+
+                <h3 class="text-3xl font-bold text-slate-800 mt-5">
+                    ৳ 1,500
+                </h3>
+
+                <p class="text-sm text-slate-500 mt-1">
+                    Pending Payments
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Main Dashboard Grid -->
+    <section class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+
+
+        <!-- Upcoming Appointment -->
+        <div class="xl:col-span-2 bg-white border border-slate-200 rounded-2xl shadow-sm">
+
+            <div class="flex items-center justify-between p-6 border-b border-slate-100">
+
+                <div>
+                    <h2 class="text-lg font-bold text-slate-800">
+                        Upcoming Appointment
+                    </h2>
+
+                    <p class="text-sm text-slate-500 mt-1">
+                        Your next scheduled visit.
+                    </p>
+                </div>
+
+                <a href="#" class="text-sm font-semibold text-teal-600 hover:text-teal-700">
+                    View All
+                </a>
+
+            </div>
+
+
+            <div class="p-6">
+
+                <div class="flex flex-col sm:flex-row sm:items-center gap-5">
+
+                    <div class="w-16 h-16 rounded-2xl bg-teal-50 text-teal-700 flex flex-col items-center justify-center shrink-0">
+                        <span class="text-xs font-semibold">NOV</span>
+                        <span class="text-2xl font-bold">05</span>
+                    </div>
+
+
+                    <div class="flex-1">
+
+                        <h3 class="font-bold text-slate-800 text-lg">
+                            Dr. Example Doctor
+                        </h3>
+
+                        <p class="text-sm text-slate-500 mt-1">
+                            Cardiology Department
+                        </p>
+
+                        <p class="text-sm text-slate-500 mt-2">
+                            ◷ 10:30 AM
+                        </p>
+
+                    </div>
+
+
+                    <div>
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-700">
+                            Pending
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <div class="mt-6 pt-5 border-t border-slate-100 flex flex-wrap gap-3">
+
+                    <a href="#"
+                       class="px-4 py-2.5 rounded-xl bg-teal-600 text-white text-sm font-semibold hover:bg-teal-700 transition">
+                        View Details
+                    </a>
+
+                    <a href="#"
+                       class="px-4 py-2.5 rounded-xl border border-slate-300 text-slate-600 text-sm font-semibold hover:bg-slate-50 transition">
+                        Reschedule
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Quick Actions -->
+        <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-6">
+
+            <h2 class="text-lg font-bold text-slate-800">
+                Quick Actions
+            </h2>
+
+            <p class="text-sm text-slate-500 mt-1 mb-5">
+                Frequently used services.
+            </p>
+
+
+            <div class="space-y-3">
+
+                <a href="#"
+                   class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 hover:border-teal-300 hover:bg-teal-50 transition">
+
+                    <span class="w-10 h-10 rounded-lg bg-teal-100 text-teal-700 flex items-center justify-center text-xl">
+                        +
+                    </span>
+
+                    <span>
+                        <span class="block text-sm font-semibold text-slate-800">
+                            Book Appointment
+                        </span>
+
+                        <span class="block text-xs text-slate-500">
+                            Schedule a doctor visit
+                        </span>
+                    </span>
+
+                </a>
+
+
+                <a href="#"
+                   class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 hover:border-blue-300 hover:bg-blue-50 transition">
+
+                    <span class="w-10 h-10 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center text-xl">
+                        ⚕
+                    </span>
+
+                    <span>
+                        <span class="block text-sm font-semibold text-slate-800">
+                            Find Doctors
+                        </span>
+
+                        <span class="block text-xs text-slate-500">
+                            Explore our specialists
+                        </span>
+                    </span>
+
+                </a>
+
+
+                <a href="{% url 'patients:profile' %}"
+                   class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 hover:border-purple-300 hover:bg-purple-50 transition">
+
+                    <span class="w-10 h-10 rounded-lg bg-purple-100 text-purple-700 flex items-center justify-center text-xl">
+                        ♙
+                    </span>
+
+                    <span>
+                        <span class="block text-sm font-semibold text-slate-800">
+                            My Profile
+                        </span>
+
+                        <span class="block text-xs text-slate-500">
+                            Update personal information
+                        </span>
+                    </span>
+
+                </a>
+
+
+                <a href="#"
+                   class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 hover:border-orange-300 hover:bg-orange-50 transition">
+
+                    <span class="w-10 h-10 rounded-lg bg-orange-100 text-orange-700 flex items-center justify-center text-xl">
+                        ▧
+                    </span>
+
+                    <span>
+                        <span class="block text-sm font-semibold text-slate-800">
+                            Medical Records
+                        </span>
+
+                        <span class="block text-xs text-slate-500">
+                            View your health history
+                        </span>
+                    </span>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Recent Activity -->
+    <section class="bg-white border border-slate-200 rounded-2xl shadow-sm">
+
+        <div class="p-6 border-b border-slate-100">
+
+            <h2 class="text-lg font-bold text-slate-800">
+                Recent Activity
+            </h2>
+
+            <p class="text-sm text-slate-500 mt-1">
+                Your recent hospital activities.
+            </p>
+
+        </div>
+
+
+        <div class="overflow-x-auto">
+
+            <table class="w-full text-left">
+
+                <thead class="bg-slate-50 text-xs uppercase tracking-wider text-slate-500">
+
+                    <tr>
+                        <th class="px-6 py-4">Activity</th>
+                        <th class="px-6 py-4">Date</th>
+                        <th class="px-6 py-4">Status</th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody class="divide-y divide-slate-100 text-sm">
+
+                    <tr>
+                        <td class="px-6 py-4 font-medium text-slate-800">
+                            Appointment Completed
+                        </td>
+
+                        <td class="px-6 py-4 text-slate-500">
+                            28 Oct 2026
+                        </td>
+
+                        <td class="px-6 py-4">
+                            <span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-semibold">
+                                Completed
+                            </span>
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td class="px-6 py-4 font-medium text-slate-800">
+                            Prescription Updated
+                        </td>
+
+                        <td class="px-6 py-4 text-slate-500">
+                            25 Oct 2026
+                        </td>
+
+                        <td class="px-6 py-4">
+                            <span class="px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold">
+                                Updated
+                            </span>
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td class="px-6 py-4 font-medium text-slate-800">
+                            Lab Report Generated
+                        </td>
+
+                        <td class="px-6 py-4 text-slate-500">
+                            20 Oct 2026
+                        </td>
+
+                        <td class="px-6 py-4">
+                            <span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-semibold">
+                                Available
+                            </span>
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock content %}
