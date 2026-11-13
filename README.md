@@ -1,237 +1,68 @@
 # Django Multi-Tenant Hospital Management System
 
-A Django-based **Multi-Tenant Hospital Management SaaS Platform** designed to manage multiple hospitals through a centralized platform while maintaining separate databases for each hospital.
+A Django-based multi-tenant Hospital Management SaaS foundation. The platform uses a central Control Plane database and a dedicated PostgreSQL database for each hospital tenant.
 
-The system aims to digitize hospital operations, simplify administrative management, and provide scalable healthcare management solutions.
+**Status:** Foundation / early development.
 
-**Project Status:** 🚧 Under Development
+## Architecture
 
----
+- **Control Plane (`default` database):** Platform identities, hospital registry, verified domains, tenant database metadata.
+- **Hospital Data Plane:** Hospital-specific data in isolated PostgreSQL databases.
+- **Identity:** One central `PlatformUser`; tenant databases store memberships using the central user's UUID. No cross-database foreign keys.
+- **Application style:** Modular monolith.
 
-## Project Overview
+## Current foundation apps
 
-This project is designed as a Software as a Service (SaaS) platform where multiple hospitals can operate independently within a centralized management system.
+- `platform_accounts`: central platform identity.
+- `hospitals`: hospital registry and hostname mapping.
+- `tenants`: tenant database metadata.
+- `hospital_accounts`: hospital membership model, intended for tenant databases.
 
-Each hospital will have its own isolated PostgreSQL database, ensuring data separation, security, and independent hospital management.
+## Setup
 
-The platform follows a **Control Plane + Hospital Data Plane** architecture.
+1. Create and activate a virtual environment.
+2. Install dependencies: `pip install -r requirements/development.txt`.
+3. Copy `.env.example` to `.env` and set a strong `DJANGO_SECRET_KEY` and PostgreSQL credentials.
+4. Create the control-plane PostgreSQL database.
+5. Run `python manage.py check`.
+6. Run `python manage.py makemigrations platform_accounts hospitals tenants hospital_accounts`.
+7. Run `python manage.py migrate`.
+8. Create a platform superuser: `python manage.py createsuperuser`.
 
-### Core Architecture
+Set `DJANGO_SETTINGS_MODULE=config.settings.development` when running management commands if needed.
 
-- **Control Plane:** Manages the overall platform, hospitals, platform administrators, and tenant configurations.
-- **Hospital Data Plane:** Handles each hospital's operational data through its own dedicated database.
-- **Multi-Tenancy:** Supports multiple hospitals within one application.
-- **Database Isolation:** Each hospital maintains a separate PostgreSQL database.
+## Important tenant database notes
 
----
+- Tenant database credentials are not stored in application tables. This starter assumes a shared PostgreSQL service account supplied through environment configuration; production deployments should use a secrets manager and least-privilege database roles.
+- Tenant database provisioning, migrations, backups, connection lifecycle, tenant-aware authentication/authorization, and operational monitoring must be completed before production.
+- The included hostname middleware is a minimal resolver foundation, not a complete security boundary. Tenant views must enforce a resolved, active tenant and membership authorization.
+- Do not expose arbitrary database aliases or let request parameters choose a database.
+- Do not use cross-database foreign keys or assume transactions span databases.
 
-## Key Features
+## Development
 
-### 1. Platform Management
-- Platform Administrator Management
-- Hospital Registration and Creation
-- Hospital Configuration
-- Hospital Activation and Deactivation
-- Tenant Database Management
-- Platform-Level Monitoring
-
-### 2. Hospital Management
-- Hospital Dashboard
-- Hospital Staff Management
-- Department Management
-- Role-Based Access Control
-- Hospital Profile Management
-
-### 3. Department Management
-
-The system is designed to support independently configurable hospital departments.
-
-- Doctor Department
-- Nurse Department
-- Clinic / OPD Department
-- Pharmacy Department
-- Diagnostic / Laboratory Department
-- Accounts Department
-- Admission Department
-- Blood Bank Department
-- Management Department
-
-### 4. Healthcare Operations
-- Patient Management
-- Doctor Management
-- Nurse Management
-- Appointment Management
-- OPD Management
-- Medical Records
-- Prescription Management
-- Pharmacy Management
-- Laboratory Management
-- Billing and Payment
-- Admission and Discharge
-- Inventory Management
-
-### 5. Multi-Tenant Database Architecture
-- Separate PostgreSQL Database for Each Hospital
-- Tenant Database Provisioning
-- Dynamic Database Connection Management
-- Tenant Resolution
-- Database Migration Management
-- Hospital Data Isolation
-
----
-
-## System Architecture
-
-```text
-                    SaaS Platform
-                          |
-                   Control Plane
-                          |
-                Platform Administration
-                          |
-                  Hospital Management
-                          |
-                   Tenant Resolver
-                          |
-             +------------+------------+
-             |            |            |
-          Hospital A   Hospital B   Hospital C
-             |            |            |
-          Database A  Database B  Database C
-             |            |            |
-          Hospital     Hospital     Hospital
-          Operations   Operations   Operations
+```bash
+python manage.py check
+python manage.py makemigrations
+python manage.py migrate
+python manage.py runserver
 ```
 
-Each hospital operates independently with its own database while sharing the central application infrastructure.
+## Roadmap
 
----
-
-## Technology Stack
-
-### Backend
-- Python
-- Django
-- Django REST Framework
-
-### Database
-- PostgreSQL
-
-### Frontend
-- HTML5
-- CSS3
-- JavaScript
-- Django Templates
-- Tailwind CSS
-
-### Development Tools
-- Git
-- GitHub
-- VS Code
-- Linux
-
----
-
-## Architecture Approach
-
-The project follows a **Modular Monolith Architecture** initially, with a clear separation between platform-level and hospital-level responsibilities.
-
-### Control Plane Applications
-- Platform Accounts
-- Hospital Registry
-- Tenant Management
-- Department Templates
-- Subscription Management
-- Platform Audit Logs
-
-### Hospital Applications
-- Accounts
-- Departments
-- Doctors
-- Nurses
-- Patients
-- Appointments
-- Clinic
-- Pharmacy
-- Diagnostics
-- Accounts Management
-- Admission
-- Blood Bank
-- Inventory
-
----
-
-## Database Strategy
-
-The project uses a separate PostgreSQL database for each hospital.
-
-| Database | Responsibility |
-|---|---|
-| Control Plane DB | Platform and hospital configuration |
-| Hospital A DB | Hospital A operational data |
-| Hospital B DB | Hospital B operational data |
-| Hospital C DB | Hospital C operational data |
-
-**Important:** Hospital databases remain isolated. Cross-database relationships will be handled through application-level identifiers and controlled integration mechanisms.
-
----
-
-## Project Goals
-
-- Build a scalable Hospital Management SaaS platform.
-- Support multiple hospitals from one centralized platform.
-- Maintain hospital-level database isolation.
-- Provide configurable hospital departments.
-- Implement secure authentication and authorization.
-- Simplify hospital administration and healthcare operations.
-- Build a maintainable and extensible Django architecture.
-
----
-
-## Development Roadmap
-
-- [ ] Project Foundation and Configuration
-- [ ] Control Plane Architecture
-- [ ] Platform Authentication and Authorization
-- [ ] Hospital Registry and Management
-- [ ] Tenant Database Architecture
-- [ ] Dynamic Database Connection Management
-- [ ] Automated Tenant Provisioning
-- [ ] Hospital Authentication and Membership
-- [ ] Department Configuration
-- [ ] Doctor and Nurse Management
-- [ ] Patient Management
-- [ ] Appointment and Clinic Management
-- [ ] Pharmacy Management
-- [ ] Diagnostic and Laboratory Management
-- [ ] Accounts and Billing Management
-- [ ] Admission and Blood Bank Management
-- [ ] Reporting and Analytics
-- [ ] Security and Audit Logging
-- [ ] Testing and Deployment
-
----
-
-## Installation
-
-Installation instructions will be added as the project structure and environment configuration are finalized.
-
----
-
-## Project Status
-
-🚧 This project is currently under active development. Features, architecture, and implementation details may evolve throughout development.
-
----
-
-## Author
-
-**Mahibul Hasan**
-
-GitHub: [@mahibulhasandev](https://github.com/mahibulhasandev)
-
----
+- [x] Initial project and settings separation
+- [x] Central platform identity model
+- [x] Hospital registry and domain model
+- [x] Tenant database metadata model
+- [x] Tenant routing/context foundation
+- [ ] Secure tenant provisioning service and command
+- [ ] Tenant migration orchestration
+- [ ] Hospital invitation and membership authentication
+- [ ] Department templates and configuration
+- [ ] Healthcare modules
+- [ ] Tenant isolation/security test suite
+- [ ] Production deployment and operations
 
 ## License
 
-License information will be added later.
+MIT
